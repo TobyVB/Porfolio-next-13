@@ -1,19 +1,29 @@
-// import Movie from "./Movie";
-import { Graph } from "react-github-activity-calendar";
+import GitHubCalendar from "react-github-calendar";
 
 export default async function Home() {
-  const data = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1`
-  );
-  const res = await data.json();
+  // const data = await fetch(
+  //   `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1`
+  // );
+  // const res = await data.json();
 
-  console.log(res);
+  // console.log(res);
 
-  // GITHUB GRAPH
-  const githubApiKey = ""; // <your-github-api-key>
-  const githubUserName = "TobyVB"; // <github-username>
-  const bgcolor = "";
-  const textColor = "";
+  const selectLastHalfYear = (contributions) => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const shownMonths = 6;
+
+    return contributions.filter((day) => {
+      const date = new Date(day.date);
+      const monthOfDay = date.getMonth();
+
+      return (
+        date.getFullYear() === currentYear &&
+        monthOfDay > currentMonth - shownMonths &&
+        monthOfDay <= currentMonth
+      );
+    });
+  };
 
   return (
     <main>
@@ -37,12 +47,7 @@ export default async function Home() {
         volutpat non molestie quis, eleifend at justo. Aliquam vitae lacus nibh.
       </p>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <Graph
-        userName={githubUserName}
-        backgroundColor={bgcolor}
-        githubApiKey={githubApiKey}
-        color={textColor}
-      />
+      <GitHubCalendar username="TobyVB" color="green" blockSize={12} />
     </main>
   );
 }
